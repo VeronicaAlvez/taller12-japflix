@@ -9,8 +9,8 @@ fetch(API_URL)
 
 //boton de busqueda
 document.getElementById("btnBuscar").addEventListener("click", () => {
-  const query = document.getElementById("btnBuscar").value.toLowerCase();
-  const resultsDiv = document.getElementById("results");
+  const query = document.getElementById("inputBuscar").value.toLowerCase();
+  const resultsDiv = document.getElementById("lista");
   resultsDiv.innerHTML = ""; // limpiar resultados previos
 
   const filtered = movies.filter(
@@ -28,19 +28,32 @@ document.getElementById("btnBuscar").addEventListener("click", () => {
   }
 
 
-
-
-
-
- 
-  filtered.forEach((movie) => {
-    const stars = getStars(movie.vote_average);
+   filtered.forEach((movie) => {
+    const stars = getStars(movie.vote_average); // usamos la función de estrellas
     resultsDiv.innerHTML += `
-      <div class="card mb-3 p-3">
+      <li class="list-group-item bg-dark text-white">
         <h5>${movie.title}</h5>
         <p><em>${movie.tagline || "Sin tagline"}</em></p>
         <p>${stars}</p>
-      </div>
+      </li>
     `;
   });
 });
+
+
+// Función para mostrar estrellas en base al voto promedio 
+function getStars(vote) {
+  const starsTotal = 5;
+  const rating = Math.round(vote / 2); // como vote_average va de 0 a 10
+  let stars = "";
+
+  for (let i = 0; i < starsTotal; i++) {
+    if (i < rating) {
+      stars += `<i class="fa fa-star text-warning"></i>`;
+    } else {
+      stars += `<i class="fa fa-star-o text-warning"></i>`;
+    }
+  }
+  return stars;
+}
+
